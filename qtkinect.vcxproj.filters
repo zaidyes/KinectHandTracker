@@ -39,12 +39,30 @@
     <ClCompile Include="BodyTracker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="KinectManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ITracker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="qtkinect.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="BodyTracker.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="KinectManager.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ITracker.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="NetworkHandler.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -57,5 +75,10 @@
     <QtRcc Include="qtkinect.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="globals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

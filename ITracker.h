@@ -31,12 +31,12 @@ public:
 	}
 
 public slots:
-	void onStartRequest() { 
+	virtual void onStartRequest() { 
 		if (!m_isRunning)
 			start(); 
 	}
 
-	void onStopRequest() { 
+	virtual void onStopRequest() { 
 		m_stop = true;
 	}
 

@@ -3,14 +3,14 @@
 
 char* CommandStrings[static_cast<int>(Commands::END) + 1] = {
 	"START",
-	"BODY_TRACKED",
+	"BODY",
+	"ATTENTION",
+	"TRACKED",
 	"ENGAGED",
-	"LEFT_HAND_TRACKED",
-	"RIGHT_HAND_TRACKED",
-	"LEFT_HAND_GRAB",
-	"RIGHT_HAND_GRAB",
-	"LEFT_HAND_OPEN",
-	"RIGHT_HAND_OPEN",
+	"LEFT_HAND",
+	"RIGHT_HAND",
+	"CLOSE",
+	"OPEN",
 	"UNKNOWN_STATE",
 	"END"
 };
@@ -28,19 +28,24 @@ NetworkHandler::~NetworkHandler()
 
 bool NetworkHandler::connect()
 {
-	if (!m_udpSocket) return false;
+	if (!m_udpSocket || !m_config.activate) return false;
 
-	m_udpSocket->bind(QHostAddress::LocalHost, 4242);
+	m_udpSocket->bind(QHostAddress(m_config.ipAddress), m_config.port);
 
 	QObject::connect(m_udpSocket, &QUdpSocket::readyRead, this, &NetworkHandler::read);
 	return true;
 }
 
-void NetworkHandler::onCommand(const int command)
+void NetworkHandler::setConfig(const NetworkConfig & networkConfig)
 {
-	if (command > static_cast<int>(Commands::END)) return;
+	m_config = networkConfig;
+}
 
-	write(CommandStrings[command]);
+void NetworkHandler::onCommand(const Commands command)
+{
+	if (command > Commands::END) return;
+
+	write(CommandStrings[static_cast<int>(command)]);
 }
 
 void NetworkHandler::read()
@@ -53,12 +58,13 @@ void NetworkHandler::read()
 
 void NetworkHandler::write(const QByteArray & data)
 {
-	m_udpSocket->writeDatagram(data, QHostAddress::LocalHost, 4242);
+	if (!m_udpSocket || !m_config.activate) return;
+
+	emit log("DEBUG: Writing " + data + " to: " + m_config.ipAddress + "/" + QString::number(m_config.port));
+	m_udpSocket->writeDatagram(data, QHostAddress(m_config.ipAddress), m_config.port);
 }
 
 void NetworkHandler::onMessage(const QString& msg)
 {
-	if (!m_udpSocket) return;
-
 	write(msg.toLocal8Bit());
 }

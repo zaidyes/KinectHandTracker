@@ -3,7 +3,12 @@
 #include <QObject>
 #include <QThread>
 
+#include <Kinect.h>
+
 #include <BodyTracker.h>
+#include <NetworkHandler.h>
+
+struct NetworkConfig;
 
 class KinectManager : public QObject
 {
@@ -16,12 +21,20 @@ public:
 	void startKinect();
 	void stopKinect();
 
+	void trackBody();
+
+	void setNetworkConfig(const NetworkConfig &config);
+
 signals:
 	void stop();
-	void onMessage(const QString &msg);
+	void log(const QString &msg);
 
 private:
+	IKinectSensor* m_kinectSensor{ nullptr };
 	BodyTracker* m_bodyTracker{ nullptr };
+
+	NetworkHandler m_networkHandler;
+
 	QThread m_workerThread;
 };
 
