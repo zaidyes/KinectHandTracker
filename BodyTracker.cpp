@@ -92,7 +92,15 @@ void BodyTracker::processBodies(const unsigned int &bodyCount, IBody **bodies)
 		if (SUCCEEDED(hr)) {
 			if (detectionRes == DetectionResult_Maybe || detectionRes == DetectionResult_Yes) {
 				newBodyData.attention = BodyData::State::ENGAGED;
-				emit log("Body engaged");
+				emit log("Body attention engaged");
+			}
+			else if(detectionRes == DetectionResult_Unknown) {
+				newBodyData.attention = BodyData::State::UNKNOWN;
+				emit log("Body attention unknown");
+			}
+			else if (detectionRes == DetectionResult_No) {
+				newBodyData.attention = BodyData::State::UNKNOWN;
+				emit log("Body attention no");
 			}
 		}
 
